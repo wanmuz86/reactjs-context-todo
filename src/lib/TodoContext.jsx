@@ -21,7 +21,6 @@ const TodoProvider = ({ children }) => {
 
     // Add -> Create method, it will pass name
 
-
     // List -> need to read the states [GET]
 
     // Row -> Delete method -> It will pass the id
@@ -52,15 +51,21 @@ const TodoProvider = ({ children }) => {
         }
     }
 
+// intialState => state in this file / todos
+// todoReducer => actions accesible by component declared in this file
+
+// we use useReducer to combine and export this state and method so that it is accesible by the components, through the <TodoContext.Provider> element
+
     const [state, dispatch] = useReducer(todoReducer, initialState);
     return (
         <TodoContext.Provider value={{ state, dispatch }}>
             {children}
         </TodoContext.Provider>
-    )
+    );
+}
 
+// This is a custom hook, later, our component will retrieve state and dispatch frm this hook
 
-};
 
 
 const useTodo = () => {

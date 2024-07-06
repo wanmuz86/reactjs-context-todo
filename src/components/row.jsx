@@ -1,10 +1,15 @@
 import React from 'react'
+import { useTodo } from '../lib/TodoContext'
 
-const Row = () => {
+const Row = ({todo}) => {
+
+    const {dispatch} = useTodo()
+
   return (
     <div>
-        <h3>Item name</h3>
-        <button>Remove</button>
+        <h3>{todo.text}</h3>
+        <button onClick={()=> dispatch({type:'REMOVE_TODO', 
+        payload:todo.id})}>Remove</button>
     </div>
   )
 }
