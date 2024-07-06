@@ -35,10 +35,17 @@ const TodoProvider = ({children})=> {
             // [...] => Array spread operator
             return {
                 ...state, 
-                todos: [ action.pa...state.todos,yload]
+                todos: [...state.todos, action.payload]
             }
 
             case 'REMOVE_TODO':  // FOR ROW (DELETE)
+
+            // I will return the state {}
+            // And the value of todos in the state will be replaced with new array filtered from the id
+            return {
+                ...state, 
+                todos: state.todos.filter(val=> val.id !== action.payload)
+            }
 
             default:
             return state;   // FOR LIST
