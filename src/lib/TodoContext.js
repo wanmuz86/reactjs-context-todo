@@ -1,4 +1,4 @@
-import React, {createContext} from "react";
+import React, { createContext, useContext, useReducer } from "react";
 
 const TodoContext = createContext(); // Later to group the provider 
 
@@ -9,11 +9,11 @@ const TodoContext = createContext(); // Later to group the provider
 // All subcomponent inside App
 // Add, List and Row will have access to all the states and methods defined here
 
-const TodoProvider = ({children})=> {
+const TodoProvider = ({ children }) => {
 
     // This is where I defined all the shareable states and it's initial value
     const initialState = {
-        todos:[],
+        todos: [],
     }
 
     // Identify all the methods (action type) neeeded from each of the Component
@@ -29,29 +29,46 @@ const TodoProvider = ({children})=> {
     const todoReducer = (state, action) => {
         switch (action.type) {
             case 'ADD_TODO': // FOR ADD
-            // FOR ADD, I WILL RETURN THE STATE
-            // AND MODIFY THE todos in the state by adding the new todoitem , sent through the payload
-            // {...} => Object spread operator
-            // [...] => Array spread operator
-            return {
-                ...state, 
-                todos: [...state.todos, action.payload]
-            }
+                // FOR ADD, I WILL RETURN THE STATE
+                // AND MODIFY THE todos in the state by adding the new todoitem , sent through the payload
+                // {...} => Object spread operator
+                // [...] => Array spread operator
+                return {
+                    ...state,
+                    todos: [...state.todos, action.payload]
+                }
 
             case 'REMOVE_TODO':  // FOR ROW (DELETE)
 
-            // I will return the state {}
-            // And the value of todos in the state will be replaced with new array filtered from the id
-            return {
-                ...state, 
-                todos: state.todos.filter(val=> val.id !== action.payload)
-            }
+                // I will return the state {}
+                // And the value of todos in the state will be replaced with new array filtered from the id
+                return {
+                    ...state,
+                    todos: state.todos.filter(val => val.id !== action.payload)
+                }
 
             default:
-            return state;   // FOR LIST
+                return state;   // FOR LIST
         }
     }
 
+    const [state, dispatch] = useReducer(todoReducer, initialState);
+    return (
+        <TodoContext.Provider value={{ state, dispatch }}>
+            {children}
+        </TodoContext.Provider>
+    )
+
+
 };
 
-export {TodoProvider}
+
+const useTodo = () => {
+    const context = useContext(TodoContext);
+    if (!context) {
+        throw new Error('useTodo must be used within a TodoProvider')
+    }
+    return context
+}
+
+export { TodoProvider, useTodo }
