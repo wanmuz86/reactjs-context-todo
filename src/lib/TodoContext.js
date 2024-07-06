@@ -16,6 +16,35 @@ const TodoProvider = ({children})=> {
         todos:[],
     }
 
+    // Identify all the methods (action type) neeeded from each of the Component
+    // As well as the data (action payload) passed by the component
+
+    // Add -> Create method, it will pass name
+
+
+    // List -> need to read the states [GET]
+
+    // Row -> Delete method -> It will pass the id
+
+    const todoReducer = (state, action) => {
+        switch (action.type) {
+            case 'ADD_TODO': // FOR ADD
+            // FOR ADD, I WILL RETURN THE STATE
+            // AND MODIFY THE todos in the state by adding the new todoitem , sent through the payload
+            // {...} => Object spread operator
+            // [...] => Array spread operator
+            return {
+                ...state, 
+                todos: [ action.pa...state.todos,yload]
+            }
+
+            case 'REMOVE_TODO':  // FOR ROW (DELETE)
+
+            default:
+            return state;   // FOR LIST
+        }
+    }
+
 };
 
 export {TodoProvider}
